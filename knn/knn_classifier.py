@@ -1,26 +1,13 @@
 from operator import itemgetter
-import csv
+from reader import Reader
 import os
 
 
 class KnnClassifier:
     def __init__(self, k, data_filename, test_filename):
         self.k = k
-        self.data = self.read_data(
-            f'{os.getcwd()}/data/{data_filename}'
-        )
-        self.test_data = self.read_data(
-            f'{os.getcwd()}/data/{test_filename}'
-        )
-
-    @staticmethod
-    def read_data(path):
-        data = []
-        with open(path) as file:
-            reader = csv.reader(file)
-            for row in reader:
-                data.append(row)
-        return data
+        self.data = Reader.read_data(f'{os.getcwd()}/data/{data_filename}')
+        self.test_data = Reader.read_data(f'{os.getcwd()}/data/{test_filename}')
 
     @staticmethod
     def knn(vector, data, k):
