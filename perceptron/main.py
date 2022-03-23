@@ -6,14 +6,9 @@ import sys
 def main():
     classifier = PerceptronClassifier(sys.argv[1], sys.argv[2], sys.argv[3])
 
-    print('ALPHA ' + classifier.alpha)
-    print('DATA')
-    print(classifier.data)
-    print('TEST')
-    print(classifier.test_data)
-    print('PERCEPTRON')
-    print(classifier.perceptron.w)
-    print(classifier.perceptron.t)
+    for i in range(10):
+        classifier.train()
+        classifier.test()
 
 
 if __name__ == '__main__':
