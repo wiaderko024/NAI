@@ -8,19 +8,19 @@ class Perceptron:
         self.alpha = alpha
 
     def delta(self, d, y, vector):
-        result = [self.w[i] for i in range(len(self.w))]
+        result = self.w
         result.append(self.t)
 
-        w = [float(x) for x in vector]
+        w = [float(element) for element in vector]
         w.append(-1)
 
         tmp = (d - y) * float(self.alpha)
 
         for i in range(len(w)):
-            w[i] *= float(tmp)
+            w[i] *= tmp
 
         for i in range(len(result)):
             result[i] += w[i]
 
-        self.w = [result[i] for i in range(len(result) - 1)]
+        self.w = result[:-1]
         self.t = result[-1]

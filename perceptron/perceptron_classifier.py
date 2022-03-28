@@ -33,8 +33,7 @@ class PerceptronClassifier:
             y = self.calculate_y(data[:-1])
             if self.result_map[y] != data[len(data) - 1]:
                 d = 0 if y == 1 else 1
-                vector = [data[i] for i in range(len(data) - 1)]
-                self.perceptron.delta(d, y, vector)
+                self.perceptron.delta(d, y, data[:-1])
 
     def test(self):
         good_results = 0

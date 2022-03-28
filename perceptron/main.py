@@ -5,10 +5,10 @@ import sys
 def main():
     classifier = PerceptronClassifier(sys.argv[2], sys.argv[3], sys.argv[4])
 
-    print('Currency before training: ' + str(classifier.test()))
+    print(f'Currency before training: {classifier.test()}')
     for i in range(int(sys.argv[1])):
         classifier.train()
-    print('Currency after traning: ' + str(classifier.test()))
+    print(f'Currency after training: {classifier.test()}')
 
     classifier.test_detail()
 
