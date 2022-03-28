@@ -19,14 +19,15 @@ class PerceptronClassifier:
             self.result_map[y] = result
             y += 1
 
+    def classify(self, vector):
+        wp = 0.0
+        for i in range(len(vector)):
+            wp += float(vector[i]) * float(self.perceptron.w[i])
+        return 1 if wp >= self.perceptron.t else 0
+
     def train(self):
         for data in self.data:
-            wp = 0.0
-            for i in range(len(data) - 1):
-                wp += float(data[i]) * float(self.perceptron.w[i])
-
-            y = 1 if wp >= self.perceptron.t else 0
-
+            y = self.classify(data[:-1])
             if self.result_map[y] != data[len(data) - 1]:
                 d = 0 if y == 1 else 1
                 vector = [data[i] for i in range(len(data) - 1)]
@@ -34,15 +35,20 @@ class PerceptronClassifier:
 
     def test(self):
         good_results = 0
-
         for data in self.test_data:
-            wp = 0.0
-            for i in range(len(data) - 1):
-                wp += float(data[i]) * float(self.perceptron.w[i])
-
-            y = 1 if wp >= self.perceptron.t else 0
-
+            y = self.classify(data[:-1])
             if self.result_map[y] == data[len(data) - 1]:
                 good_results += 1
-
         return good_results / len(self.test_data)
+
+    def test_detail(self):
+        for key in self.result_map:
+            all_lines = 0
+            good_results = 0
+            for data in self.test_data:
+                if data[len(data) - 1] == self.result_map[key]:
+                    y = self.classify(data[:-1])
+                    if self.result_map[y] == data[len(data) - 1]:
+                        good_results += 1
+                    all_lines += 1
+            print(f'Currency for {self.result_map[key]}: {good_results / all_lines}')
