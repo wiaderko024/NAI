@@ -17,5 +17,21 @@ class PerceptronClassifier:
 
         y = 0
         for result in results_set:
-            self.result_map[result] = y
+            self.result_map[y] = result
             y += 1
+
+        print('W: ' + str(self.perceptron.w))
+        print('T: ' + str(self.perceptron.t))
+        print('Result map: ' + str(self.result_map))
+
+    def train(self):
+        for data in self.data:
+            wp = 0.0
+            for i in range(len(data) - 1):
+                wp += float(data[i]) * float(self.perceptron.w[i])
+
+            y = 1 if wp >= self.perceptron.t else 0
+
+            if self.result_map[y] != data[len(data) - 1]:
+                print(str(data) + ' ' + str(wp) + ' ' + self.result_map[y])
+                print('DELTA')
