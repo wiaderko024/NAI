@@ -20,6 +20,9 @@ class PerceptronClassifier:
             y += 1
 
     def classify(self, vector):
+        return self.result_map[self.calculate_y(vector)]
+
+    def calculate_y(self, vector):
         wp = 0.0
         for i in range(len(vector)):
             wp += float(vector[i]) * float(self.perceptron.w[i])
@@ -27,7 +30,7 @@ class PerceptronClassifier:
 
     def train(self):
         for data in self.data:
-            y = self.classify(data[:-1])
+            y = self.calculate_y(data[:-1])
             if self.result_map[y] != data[len(data) - 1]:
                 d = 0 if y == 1 else 1
                 vector = [data[i] for i in range(len(data) - 1)]
@@ -36,7 +39,7 @@ class PerceptronClassifier:
     def test(self):
         good_results = 0
         for data in self.test_data:
-            y = self.classify(data[:-1])
+            y = self.calculate_y(data[:-1])
             if self.result_map[y] == data[len(data) - 1]:
                 good_results += 1
         return good_results / len(self.test_data)
@@ -47,7 +50,7 @@ class PerceptronClassifier:
             good_results = 0
             for data in self.test_data:
                 if data[len(data) - 1] == self.result_map[key]:
-                    y = self.classify(data[:-1])
+                    y = self.calculate_y(data[:-1])
                     if self.result_map[y] == data[len(data) - 1]:
                         good_results += 1
                     all_lines += 1

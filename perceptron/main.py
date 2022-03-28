@@ -12,6 +12,18 @@ def main():
 
     classifier.test_detail()
 
+    print('Give vector (after spaces) or write EXIT to close:')
+
+    while True:
+        print('Give vector:')
+        string = input()
+
+        if string != 'EXIT':
+            vector = string.split(' ')
+            print(classifier.classify(vector))
+        else:
+            break
+
 
 if __name__ == '__main__':
     if len(sys.argv) == 5:
