@@ -31,3 +31,18 @@ class PerceptronClassifier:
                 d = 0 if y == 1 else 1
                 vector = [data[i] for i in range(len(data) - 1)]
                 self.perceptron.delta(d, y, vector)
+
+    def test(self):
+        good_results = 0
+
+        for data in self.test_data:
+            wp = 0.0
+            for i in range(len(data) - 1):
+                wp += float(data[i]) * float(self.perceptron.w[i])
+
+            y = 1 if wp >= self.perceptron.t else 0
+
+            if self.result_map[y] == data[len(data) - 1]:
+                good_results += 1
+
+        return good_results / len(self.test_data)
