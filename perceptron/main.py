@@ -4,7 +4,6 @@ import sys
 
 def main():
     classifier = PerceptronClassifier(sys.argv[1], sys.argv[2], sys.argv[3])
-    classifier.train()
 
 
 if __name__ == '__main__':
