@@ -1,4 +1,5 @@
 from reader import Reader
+from perceptron import Perceptron
 
 
 class NeuralNetwork:
@@ -6,14 +7,12 @@ class NeuralNetwork:
         self._k = k
         self._n = n
         self._alpha = alpha
-        self._languages = {}
+        self._perceptron = Perceptron(26, self._alpha)
 
+        self._languages = {}
         for i in range(int(k)):
             data = Reader.read_data(data_paths[i])
             self._languages[data_paths[i].split('/')[len(data_paths[i].split('/')) - 1].split('.')[0]] = self._load_languages(data)
-
-        for key in self._languages:
-            print(f'{key}: {self._languages[key]}')
 
     @staticmethod
     def _load_languages(data):
