@@ -1,5 +1,9 @@
+import random
+
 from reader import Reader
 from perceptron import Perceptron
+
+from string import ascii_lowercase
 
 
 class NeuralNetwork:
@@ -7,12 +11,16 @@ class NeuralNetwork:
         self._k = k
         self._n = n
         self._alpha = alpha
-        self._perceptron = Perceptron(26, self._alpha)
-
         self._languages = {}
+        self._perceptrons = {}
         for i in range(int(k)):
             data = Reader.read_data(data_paths[i])
-            self._languages[data_paths[i].split('/')[len(data_paths[i].split('/')) - 1].split('.')[0]] = self._load_languages(data)
+            language = data_paths[i].split('/')[-2].split('.')[0]
+            self._languages[language] = self._load_languages(data)
+            self._perceptrons[language] = Perceptron(26, self._alpha)
+
+        for p in self._perceptrons:
+            print(f'{p}: {self._perceptrons[p]([random.uniform(0, 1) for i in range(26)])}')
 
     @staticmethod
     def _load_languages(data):
@@ -29,3 +37,10 @@ class NeuralNetwork:
                 result += c
 
         return result
+
+    # def train(self):
+    #     results = []
+    #     for language in self._languages:
+    #         vector = []
+    #         for letter in ascii_lowercase:
+    #             vector.append(self._languages[language].count(letter)/len(self._languages[language]))
