@@ -3,7 +3,8 @@ import sys
 
 
 def main(k, n, alpha, paths):
-    network = NeuralNetwork(k, n, alpha, paths)
+    network = NeuralNetwork(k, alpha, paths)
+    network.train()
 
 
 if __name__ == '__main__':
