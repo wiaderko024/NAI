@@ -62,11 +62,16 @@ class NeuralNetwork:
 
         return result_data
 
+    @staticmethod
+    def _calculate_vector(text):
+        vector = []
+        for letter in ascii_lowercase:
+            vector.append(text.count(letter)/len(text))
+        return vector
+
     def train(self):
         for language in self._languages:
-            vector = []
-            for letter in ascii_lowercase:
-                vector.append(self._languages[language].count(letter)/len(self._languages[language]))
+            vector = self._calculate_vector(self._languages[language])
 
             result_map = {}
             for perceptron in self._perceptrons:
@@ -79,4 +84,18 @@ class NeuralNetwork:
                     self._perceptrons[result].delta(0, 1, vector)
 
     def test(self):
-        print(self._train_map)
+        good_results = 0
+        all_results = 0
+        for key in self._train_map:
+            for item in self._train_map[key]:
+                if self.classify(item) == key:
+                    good_results += 1
+                all_results += 1
+
+        return good_results / all_results
+
+    def classify(self, item):
+        results = {}
+        for perceptron in self._perceptrons:
+            results[perceptron] = self._perceptrons[perceptron].net(self._calculate_vector(item))
+        return max(results, key=results.get)

@@ -4,8 +4,20 @@ import sys
 
 def main(k, n, alpha, paths):
     network = NeuralNetwork(k, alpha, paths)
-    network.train()
-    network.test()
+
+    print(f'Accuracy before training: {network.test()}')
+    for i in range(int(n)):
+        network.train()
+    print(f'Accuracy after training: {network.test()}')
+
+    while True:
+        print('Give sentence or sentences:')
+        text = input()
+
+        if text != 'EXIT':
+            print(network.classify(text))
+        else:
+            break
 
 
 if __name__ == '__main__':
