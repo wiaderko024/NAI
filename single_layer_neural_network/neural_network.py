@@ -91,7 +91,6 @@ class NeuralNetwork:
                 if self.classify(item) == key:
                     good_results += 1
                 all_results += 1
-
         return good_results / all_results
 
     def classify(self, item):
