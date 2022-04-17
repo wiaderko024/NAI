@@ -2,6 +2,7 @@ from reader import Reader
 from perceptron import Perceptron
 
 from string import ascii_lowercase
+import random
 import os
 import re
 
@@ -11,18 +12,18 @@ class NeuralNetwork:
         self._k = k
         self._alpha = alpha
 
-        self._languages = {}
+        self._train_map = {}
         self._perceptrons = {}
         for i in range(int(k)):
             data = Reader.read_data(data_paths[i])
             language = data_paths[i].split('/')[-2].split('.')[0]
-            self._languages[language] = self._load_languages(data)
+            self._train_map[language] = self._load_languages(data)
             self._perceptrons[language] = Perceptron(26, self._alpha)
 
-        self._train_map = {}
-        for language in self._languages:
+        self._languages = {}
+        for language in self._train_map:
             result = self._get_test_data(data_paths, language)
-            self._train_map[language] = result
+            self._languages[language] = result
 
     @staticmethod
     def _load_languages(data):
@@ -66,12 +67,18 @@ class NeuralNetwork:
     def _calculate_vector(text):
         vector = []
         for letter in ascii_lowercase:
-            vector.append(text.count(letter)/len(text))
+            vector.append(text.count(letter) / len(text))
         return vector
 
     def train(self):
-        for language in self._languages:
-            vector = self._calculate_vector(self._languages[language])
+        texts = [[language, text] for language in self._languages for text in self._languages[language]]
+        random.shuffle(texts)
+
+        for text in texts:
+            language = text[0]
+            sentence = text[1]
+
+            vector = self._calculate_vector(sentence)
 
             result_map = {}
             for perceptron in self._perceptrons:
@@ -84,13 +91,11 @@ class NeuralNetwork:
                     self._perceptrons[result].delta(0, 1, vector)
 
     def test(self):
-        good_results = 0
-        all_results = 0
+        good_results, all_results = 0, 0
         for key in self._train_map:
-            for item in self._train_map[key]:
-                if self.classify(item) == key:
-                    good_results += 1
-                all_results += 1
+            if self.classify(self._train_map[key]) == key:
+                good_results += 1
+            all_results += 1
         return good_results / all_results
 
     def classify(self, item):
