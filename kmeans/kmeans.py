@@ -42,7 +42,20 @@ class Kmeans:
 
         self.c = new_c
 
-        print(f'C after iteration: {self.c}')
+        dis_sum = []
+        for key in self.map:
+            points = self.map[key]
+            distances = []
+            for point in points:
+                tmp = []
+                for i in range(len(point)):
+                    tmp.append((float(self.c[key][i]) - float(point[i])) ** 2)
+                distances.append(sum(tmp))
+            dis_sum.append(sum(distances))
+
+        print(f'C after iteration:')
+        for i in range(len(self.c)):
+            print(f'{self.c[i]} ({dis_sum[i]})')
         print(f'Map after iteration:')
         for key in self.map:
             print(f'{key}: ({len(self.map[key])}) {self.map[key]}')
@@ -62,7 +75,9 @@ class Kmeans:
 
         print()
         print(f'Iterations: {iterations}')
-        print(f'C after learning: {self.c}')
+        print(f'C after learning:')
+        for c in self.c:
+            print(c)
         print(f'Map after learning:')
         for key in self.map:
             print(f'{key}: ({len(self.map[key])}) {self.map[key]}')
